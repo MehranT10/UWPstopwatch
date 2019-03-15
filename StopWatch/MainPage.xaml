@@ -1,0 +1,91 @@
+﻿<Page
+    x:Class="StopWatch.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StopWatch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:m="using:StopWatch.Models"
+    xmlns:v="using:StopWatch.view"
+    xmlns:vm="using:StopWatch.ViweModels"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <m:M1Swatch x:Key="stopwatch"/>
+        <vm:VMstopwatch x:Key="viewmodel"/>
+    </Page.Resources>
+    
+    <Grid Background="Gray"
+          DataContext="{Binding Source={StaticResource viewmodel} , Path=MStopwatch}">
+        <Grid Margin="0 40 0 60"
+              HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <v:TimeControl elementsize="2"
+                           Time="{Binding Timevar}"/>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Laps"
+                           FontSize="20"
+                           Foreground="DodgerBlue"/>
+                <TextBlock Text="Splits"
+                           Grid.Column="1"
+                           FontSize="20"
+                           Foreground="DodgerBlue"/>
+
+                <ListView  Grid.Row="1" ItemsSource="{Binding Laps}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <v:TimeControl Time="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView  Grid.Row="1"
+                           Grid.Column="1"
+                           ItemsSource="{Binding splits}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <v:TimeControl Time="{Binding}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar Visibility="Visible"
+                    BorderThickness="0"
+                    IsOpen="True"
+                    Background="DodgerBlue"
+                    Foreground="White">
+            <AppBarButton Label="start"
+                          Icon="Play"
+                          Command="{Binding Source={StaticResource viewmodel}, Path=StartCommand}"
+                          CommandParameter="{Binding Source={StaticResource viewmodel} , Path=IsRunning}"/>
+            <AppBarButton Label="stop"
+                          Icon="Stop"
+                          Command="{Binding Source={StaticResource viewmodel} , Path=StopCommand}"
+                          CommandParameter="{Binding Source={StaticResource viewmodel} , Path=IsRunning}"/>
+            <AppBarButton Label="new lab"
+                          Icon="Flag"
+                          Command="{Binding Source={StaticResource viewmodel} , Path=NewlabCommand}"
+                          CommandParameter="{Binding Source={StaticResource viewmodel} , Path=IsRunning}"/>
+            <AppBarButton Label="restart"
+                          Icon="Refresh"
+                          Command="{Binding Source={StaticResource viewmodel} , Path=ReloadCommand}"
+                          CommandParameter="{Binding Source={StaticResource viewmodel} , Path=IsRunning}"/>
+
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
